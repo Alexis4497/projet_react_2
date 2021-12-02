@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import DeleteArticle from './DeleteArticle';
 
 const Article = ({article}) => {
 
@@ -22,7 +23,7 @@ const Article = ({article}) => {
         
         const data = {
             author: article.author,
-            content: editedContent,
+            content: editedContent ? editedContent : article.content,
             date: article.date,
 
         };
@@ -35,20 +36,27 @@ const Article = ({article}) => {
 
 
     return (
-      <div className="article">
+      <div 
+      className="article" 
+      style={{ background: isEditing ? "#f3feff" : 'white'}}>
+          
           <div className="card-header">
+              
               <h3>{article.author}</h3>
+              
               <em>Posté le {dateParser(article.date)}</em>
+
           </div>
+
           {isEditing ?  (
               <textarea 
               onChange={(e) => setEditedContent(e.target.value)} 
               autoFocus 
-              defaultValue={article.content}>
+              defaultValue={editedContent ? editedContent : article.content}>
               </textarea>
           ) : (
 
-            <p>{article.content}</p>
+            <p>{editedContent ? editedContent : article.content}</p>
 
           )} {/*Equivalent if else*/}
           
@@ -61,7 +69,7 @@ const Article = ({article}) => {
                 <button onClick={() => setIsEditing(true)}>Edit</button>
               )}
               
-              <button>Delete</button>
+              <DeleteArticle id={article.id}/>
           </div>
       </div>
     );
